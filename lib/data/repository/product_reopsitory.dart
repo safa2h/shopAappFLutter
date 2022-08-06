@@ -1,3 +1,4 @@
+import 'package:nike_store/common/http_service.dart';
 import 'package:nike_store/data/product.dart';
 
 import '../dataSource/product_data_source.dart';
@@ -7,7 +8,7 @@ abstract class IProductRepository {
   Future<List<ProductEntity>> search(String searchText);
 }
 
-final productRepository = ProductRepository(ProductDataSource(httpClient));
+final productRepository = ProductRepository(ProductDataSource(HttpService()));
 
 class ProductRepository implements IProductRepository {
   final IProductDataSource _productDataSource;
