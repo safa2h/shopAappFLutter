@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:nike_store/data/product.dart';
+import 'package:nike_store/data/repository/banner_repository.dart';
 import 'package:nike_store/data/repository/product_reopsitory.dart';
 import 'package:nike_store/theme.dart';
+import 'package:nike_store/ui/home/home.dart';
 
 void main() {
   runApp(const MyApp());
@@ -40,26 +42,7 @@ class MyApp extends StatelessWidget {
             headline6: defaultTextStyle.copyWith(fontWeight: FontWeight.bold)),
       ),
       home: const Directionality(
-          textDirection: TextDirection.rtl, child: MyHomePage()),
-    );
-  }
-}
-
-class MyHomePage extends StatelessWidget {
-  const MyHomePage({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    productRepository.getProducts(ProductSort.popular).then((value) {
-      print(value);
-    });
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('فروشکاه نایک'),
-      ),
-      body: Center(
-        child: Text('Hello World'),
-      ),
+          textDirection: TextDirection.rtl, child: HomeScreen()),
     );
   }
 }

@@ -13,7 +13,7 @@ abstract class IProductDataSource {
 //   baseUrl: 'http://expertdevelopers.ir/api/v1/',
 // ));
 
-class ProductDataSource with HttValidator implements IProductDataSource {
+class ProductDataSource with HttpValidator implements IProductDataSource {
   final HttpService _httpService;
 
   ProductDataSource(this._httpService);
