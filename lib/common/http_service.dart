@@ -1,9 +1,8 @@
 import 'package:dio/dio.dart';
+import 'package:nike_store/common/consts.dart';
 
 class HttpService {
   late Dio _dio;
-
-  final baseUrl = "http://expertdevelopers.ir/api/v1/";
 
   HttpService() {
     _dio = Dio(BaseOptions(
