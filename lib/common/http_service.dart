@@ -1,10 +1,17 @@
 import 'package:dio/dio.dart';
+<<<<<<< HEAD
+=======
+import 'package:nike_store/common/consts.dart';
+>>>>>>> safa
 
 class HttpService {
   late Dio _dio;
 
+<<<<<<< HEAD
   final baseUrl = "http://expertdevelopers.ir/api/v1/";
 
+=======
+>>>>>>> safa
   HttpService() {
     _dio = Dio(BaseOptions(
       baseUrl: baseUrl,

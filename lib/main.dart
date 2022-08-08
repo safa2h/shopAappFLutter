@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nike_store/data/product.dart';
+import 'package:nike_store/data/repository/banner_repository.dart';
 import 'package:nike_store/data/repository/product_reopsitory.dart';
 import 'package:nike_store/theme.dart';
 import 'package:nike_store/ui/home/home.dart';
@@ -35,7 +36,10 @@ class MyApp extends StatelessWidget {
             secondary: LightThemeColor.secondryColor,
             onSecondary: Colors.white),
         textTheme: TextTheme(
+            button: defaultTextStyle,
             bodyText2: defaultTextStyle,
+            subtitle1: defaultTextStyle.copyWith(
+                color: LightThemeColor.secondryTextColor),
             caption: defaultTextStyle.copyWith(
                 fontSize: 12, color: LightThemeColor.secondryTextColor),
             headline6: defaultTextStyle.copyWith(fontWeight: FontWeight.bold)),
