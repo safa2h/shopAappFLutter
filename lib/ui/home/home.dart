@@ -8,7 +8,9 @@ import 'package:nike_store/data/product.dart';
 import 'package:nike_store/data/repository/banner_repository.dart';
 import 'package:nike_store/data/repository/product_reopsitory.dart';
 import 'package:nike_store/ui/home/bloc/home_bloc.dart';
+import 'package:nike_store/ui/widgets/error_widget.dart';
 import 'package:nike_store/ui/widgets/image_service.dart';
+import 'package:nike_store/ui/widgets/product_item.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -33,19 +35,11 @@ class HomeScreen extends StatelessWidget {
                   child: CircularProgressIndicator(),
                 );
               } else if (state is HomeError) {
-                return Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(state.appException.message),
-                      ElevatedButton(
-                          onPressed: () {
-                            BlocProvider.of<HomeBloc>(context)
-                                .add(HomeRefresh());
-                          },
-                          child: Text('تلاش دوباره'))
-                    ],
-                  ),
+                return ErrorWidgetCustom(
+                  errorMessage: state.appException.message,
+                  tapCallback: () {
+                    BlocProvider.of<HomeBloc>(context).add(HomeRefresh());
+                  },
                 );
               } else if (state is Homesuccess) {
                 return ListView.builder(
@@ -132,88 +126,12 @@ class ProductList extends StatelessWidget {
                   padding: const EdgeInsets.all(4),
                   child: ProductItem(
                     product: products[index],
+                    borderRadius: BorderRadius.circular(12),
                   ),
                 );
               })),
         )
       ],
-    );
-  }
-}
-
-class ProductItem extends StatelessWidget {
-  final ProductEntity product;
-  const ProductItem({
-    Key? key,
-    required this.product,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final ThemeData themeData = Theme.of(context);
-    return SizedBox(
-      width: 176,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Stack(
-            children: [
-              SizedBox(
-                width: 176,
-                height: 189,
-                child: ImageLoadingService(
-                  imageUrl: product.imageUrl,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-              ),
-              Positioned(
-                  top: 8,
-                  right: 8,
-                  child: Container(
-                    width: 36,
-                    height: 36,
-                    decoration: BoxDecoration(
-                        color: themeData.colorScheme.onPrimary,
-                        borderRadius: BorderRadius.circular(18)),
-                    child: IconButton(
-                        onPressed: () {},
-                        icon: Icon(
-                          Icons.favorite_border_outlined,
-                          size: 24,
-                          color: Colors.grey.shade700,
-                        )),
-                  )),
-            ],
-          ),
-          const SizedBox(
-            height: 8,
-          ),
-          Text(
-            product.title,
-            maxLines: 1,
-            textDirection: TextDirection.rtl,
-            overflow: TextOverflow.clip,
-          ),
-          const SizedBox(
-            height: 8,
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 8, right: 8),
-            child: Text(
-              product.previousPrice.withPriceLable,
-              style: themeData.textTheme.caption!
-                  .copyWith(decoration: TextDecoration.lineThrough),
-            ),
-          ),
-          const SizedBox(
-            height: 8,
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 8, right: 8),
-            child: Text(product.price.withPriceLable),
-          )
-        ],
-      ),
     );
   }
 }

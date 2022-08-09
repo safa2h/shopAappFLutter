@@ -3,7 +3,9 @@ import 'package:nike_store/data/product.dart';
 import 'package:nike_store/data/repository/banner_repository.dart';
 import 'package:nike_store/data/repository/product_reopsitory.dart';
 import 'package:nike_store/theme.dart';
+import 'package:nike_store/ui/auth/atuh.dart';
 import 'package:nike_store/ui/home/home.dart';
+import 'package:nike_store/ui/root.dart';
 
 void main() {
   runApp(const MyApp());
@@ -42,10 +44,11 @@ class MyApp extends StatelessWidget {
                 color: LightThemeColor.secondryTextColor),
             caption: defaultTextStyle.copyWith(
                 fontSize: 12, color: LightThemeColor.secondryTextColor),
-            headline6: defaultTextStyle.copyWith(fontWeight: FontWeight.bold)),
+            headline6: defaultTextStyle.copyWith(
+                fontWeight: FontWeight.bold, fontSize: 18)),
       ),
       home: const Directionality(
-          textDirection: TextDirection.rtl, child: HomeScreen()),
+          textDirection: TextDirection.rtl, child: AuthScreen()),
     );
   }
 }
