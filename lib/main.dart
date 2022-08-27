@@ -1,11 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:nike_store/data/favorite_manager.dart';
 import 'package:nike_store/data/product.dart';
-import 'package:nike_store/data/repository/banner_repository.dart';
-import 'package:nike_store/data/repository/product_reopsitory.dart';
+import 'package:nike_store/data/repository/auth_repository.dart';
 import 'package:nike_store/theme.dart';
-import 'package:nike_store/ui/home/home.dart';
+import 'package:nike_store/ui/auth/atuh.dart';
+import 'package:nike_store/ui/root.dart';
 
-void main() {
+void main() async {
+  await Hive.initFlutter();
+  Hive.registerAdapter(ProductEntityAdapter());
+  Hive.openBox<ProductEntity>(FavoriteManager.boxName);
+
+  WidgetsFlutterBinding.ensureInitialized();
+  authRepository.loadAuthInfo();
   runApp(const MyApp());
 }
 
@@ -31,6 +39,15 @@ class MyApp extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
+        inputDecorationTheme: InputDecorationTheme(
+            border: OutlineInputBorder(),
+            enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                    color: LightThemeColor.primaryTextColor.withOpacity(0.1)))),
+        appBarTheme: AppBarTheme(
+            backgroundColor: Colors.white,
+            elevation: 0,
+            foregroundColor: LightThemeColor.primaryTextColor),
         colorScheme: const ColorScheme.light(
             primary: LightThemeColor.primaryColor,
             secondary: LightThemeColor.secondryColor,
@@ -42,10 +59,11 @@ class MyApp extends StatelessWidget {
                 color: LightThemeColor.secondryTextColor),
             caption: defaultTextStyle.copyWith(
                 fontSize: 12, color: LightThemeColor.secondryTextColor),
-            headline6: defaultTextStyle.copyWith(fontWeight: FontWeight.bold)),
+            headline6: defaultTextStyle.copyWith(
+                fontWeight: FontWeight.bold, fontSize: 18)),
       ),
       home: const Directionality(
-          textDirection: TextDirection.rtl, child: HomeScreen()),
+          textDirection: TextDirection.rtl, child: RoootScreen()),
     );
   }
 }

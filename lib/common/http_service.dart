@@ -1,23 +1,27 @@
 import 'package:dio/dio.dart';
-<<<<<<< HEAD
-=======
-import 'package:nike_store/common/consts.dart';
->>>>>>> safa
+
+import 'package:nike_store/data/repository/auth_repository.dart';
 
 class HttpService {
   late Dio _dio;
 
-<<<<<<< HEAD
   final baseUrl = "http://expertdevelopers.ir/api/v1/";
 
-=======
->>>>>>> safa
   HttpService() {
     _dio = Dio(BaseOptions(
       baseUrl: baseUrl,
-    ));
-
-    //  initializeInterceptors();
+    ))
+      ..interceptors.add(
+        InterceptorsWrapper(
+          onRequest: (requst, handler) {
+            final authInfo = AuthRepository.authInfoNotifire.value;
+            if (authInfo != null && authInfo.accessToen != null) {
+              requst.headers['Authorization'] = 'Bearer ${authInfo.accessToen}';
+            }
+            handler.next(requst);
+          },
+        ),
+      );
   }
 
   Future<Response> getRequest(String endPoint) async {
@@ -33,13 +37,16 @@ class HttpService {
     return response;
   }
 
-  initializeInterceptors() {
-    _dio.interceptors.add(
-      InterceptorsWrapper(
-        onError: (e, handler) {},
-        onRequest: (requst, handler) {},
-        onResponse: (response, handler) {},
-      ),
-    );
+  Future<Response> post(String endPoint, Map<String, dynamic> data) async {
+    Response response;
+
+    try {
+      response = await _dio.post(endPoint, data: data);
+    } on DioError catch (e) {
+      print(e.message);
+      throw Exception(e.message);
+    }
+
+    return response;
   }
 }
