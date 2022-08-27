@@ -1,6 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:nike_store/data/repository/auth_repository.dart';
+import 'package:nike_store/data/repository/cart_repository.dart';
+import 'package:nike_store/ui/cart/cart.dart';
 import 'package:nike_store/ui/home/home.dart';
+import 'package:nike_store/ui/profile/profile_Screen.dart';
+import 'package:nike_store/ui/widgets/badge.dart';
+import 'package:nike_store/ui/widgets/emty_state.dart';
+
+import 'auth/atuh.dart';
 
 class RoootScreen extends StatefulWidget {
   const RoootScreen({Key? key}) : super(key: key);
@@ -46,6 +55,8 @@ class _RoootScreenState extends State<RoootScreen> {
 
   @override
   void initState() {
+    cartRepository.count();
+
     super.initState();
   }
 
@@ -73,9 +84,18 @@ class _RoootScreenState extends State<RoootScreen> {
               BottomNavigationBarItem(
                 icon: Stack(
                   clipBehavior: Clip.none,
-                  children: const [
+                  children: [
                     Icon(
                       CupertinoIcons.cart,
+                    ),
+                    Positioned(
+                      right: -10,
+                      child: ValueListenableBuilder<int>(
+                        valueListenable: CartRepository.cartNotifierCount,
+                        builder: (context, value, child) {
+                          return Badge(value: value);
+                        },
+                      ),
                     ),
                   ],
                 ),
@@ -115,27 +135,39 @@ class _RoootScreenState extends State<RoootScreen> {
   }
 }
 
-class CartScreen extends StatelessWidget {
-  const CartScreen({Key? key}) : super(key: key);
+class ProfileScreen1 extends StatelessWidget {
+  const ProfileScreen1({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
-        child: Text('Cart Screen'),
-      ),
-    );
-  }
-}
-
-class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
-        child: Text('Profile Screen'),
+    return SafeArea(
+      child: Scaffold(
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text('Profile Screen'),
+              AuthRepository.authInfoNotifire.value == null &&
+                      AuthRepository.authInfoNotifire.value!.accessToen.isEmpty
+                  ? EmptyState(
+                      message: 'لطفا وارد حساب کاربری شوید',
+                      image: SvgPicture.asset(
+                        'assets/svgs/auth_required.svg',
+                        width: 200,
+                        height: 200,
+                      ),
+                      callToaction: ElevatedButton(
+                        child: Text('ورود'),
+                        onPressed: () {
+                          Navigator.of(context).push(
+                              MaterialPageRoute(builder: (_) => AuthScreen()));
+                        },
+                      ),
+                    )
+                  : Container()
+            ],
+          ),
+        ),
       ),
     );
   }

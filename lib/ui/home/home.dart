@@ -8,6 +8,7 @@ import 'package:nike_store/data/product.dart';
 import 'package:nike_store/data/repository/banner_repository.dart';
 import 'package:nike_store/data/repository/product_reopsitory.dart';
 import 'package:nike_store/ui/home/bloc/home_bloc.dart';
+import 'package:nike_store/ui/list/list_screen.dart';
 import 'package:nike_store/ui/widgets/error_widget.dart';
 import 'package:nike_store/ui/widgets/image_service.dart';
 import 'package:nike_store/ui/widgets/product_item.dart';
@@ -63,13 +64,21 @@ class HomeScreen extends StatelessWidget {
                           return ProductList(
                             products: state.latestProducts,
                             title: 'جدیدترین',
-                            tapCallback: () {},
+                            tapCallback: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (contex) =>
+                                      ListScreen(sort: ProductSort.latest)));
+                            },
                           );
                         case 4:
                           return ProductList(
                             products: state.popularProducts,
                             title: 'پر بازدیدترین',
-                            tapCallback: () {},
+                            tapCallback: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (contex) =>
+                                      ListScreen(sort: ProductSort.popular)));
+                            },
                           );
                         default:
                           return Container();
@@ -110,7 +119,8 @@ class ProductList extends StatelessWidget {
                 title,
                 style: Theme.of(context).textTheme.subtitle1,
               ),
-              TextButton(onPressed: tapCallback, child: Text('مشاهده همه'))
+              TextButton(
+                  onPressed: tapCallback, child: const Text('مشاهده همه'))
             ],
           ),
         ),
@@ -118,7 +128,7 @@ class ProductList extends StatelessWidget {
           height: 290,
           child: ListView.builder(
               physics: scrollPhysic,
-              padding: EdgeInsets.only(left: 8, right: 8),
+              padding: const EdgeInsets.only(left: 8, right: 8),
               itemCount: products.length,
               scrollDirection: Axis.horizontal,
               itemBuilder: ((context, index) {
